@@ -5,36 +5,31 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInW
 import { useNavigation } from '@react-navigation/native';
 import { RootNavigationProp} from '../../App';
 
-const SignUp = () => {
+const SignIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigation = useNavigation<RootNavigationProp>();
     const auth = getAuth();
-    
 
-    const handleSignUp = async () => {
+    const handleSignIn = async () => {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            if (userCredential) {
-                await sendEmailVerification(userCredential.user)
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
+            if (userCredential.user.emailVerified){
+                navigation.navigate("Home")
+            }
+            else {
                 navigation.navigate("VerifyEmail")
             }
-        } 
+        }
         catch (error: any) {
-            if (error.code === "auth/email-already-in-use") {
-            console.log("That email address is already in use!");
-            } else if (error.code === "auth/invalid-email") {
-            console.log("That email address is invalid!");
-            } else {
-            console.error(error);
-            }
+            Alert.alert(error.message)
         }
     }
 
     return (
         <SafeAreaView className='flex-1'>
             <View className='flex-1 justify-center items-center gap-4'>
-                    <Text>SignUp</Text>
+                    <Text>SignIn</Text>
                     <TextInput
                     className='border border-gray-300 px-4 py-2 w-72 rounded-xl'
                         placeholder='Email'
@@ -49,12 +44,15 @@ const SignUp = () => {
                         value={password}
                         onChangeText={setPassword}
                     />
-                    <TouchableOpacity className='bg-green-500 w-28 h-8 justify-center items-center' onPress={()=>handleSignUp()}>
+                    <TouchableOpacity className='bg-green-500 w-28 h-8 justify-center items-center' onPress={()=>handleSignIn()}>
                         <Text>Submit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.navigate("SignUp")}>
+                        <Text>Create Account</Text>
                     </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
 }
 
-export default SignUp
+export default SignIn
