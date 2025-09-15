@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import SignUp from './components/Auth/SignUp';
 import VerifyEmail from './components/Auth/VerifyEmail';
 import SignIn from './components/Auth/SignIn';
+import DrawerComponent from './components/Drawer/Drawer';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -36,6 +37,7 @@ export type RootStackParamList = {
   Home: undefined;
   VerifyEmail: undefined;
   SignIn: undefined;
+  Drawer: undefined;
 }
 export type RootNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -59,8 +61,8 @@ function AppContent() {
   if (initializing) return null;
   console.log(user)
   return (
-    <RootStack.Navigator initialRouteName={user ? user.emailVerified ? "Home" : "VerifyEmail" : "SignIn"}>
-      <RootStack.Screen name="Home" component={Home} options={{headerShown: false}}/>
+    <RootStack.Navigator initialRouteName={user ? user.emailVerified ? "Drawer" : "VerifyEmail" : "SignIn"}>
+      <RootStack.Screen name="Drawer" component={DrawerComponent} options={{headerShown: false}}/>
       <RootStack.Screen name="SignIn" component={SignIn} options={{headerShown: false}}/>
       <RootStack.Screen name="VerifyEmail" component={VerifyEmail} options={{headerShown: false}}/>
       <RootStack.Screen name="SignUp" component={SignUp} options={{headerShown: false}}/>

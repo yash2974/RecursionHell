@@ -15,7 +15,7 @@ const SignIn = () => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             if (userCredential.user.emailVerified){
-                navigation.navigate("Home")
+                navigation.navigate("Drawer")
             }
             else {
                 navigation.navigate("VerifyEmail")
